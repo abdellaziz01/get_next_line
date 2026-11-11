@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abdait-o <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/11/10 13:56:50 by abdait-o          #+#    #+#             */
-/*   Updated: 2026/11/10 13:59:35 by abdait-o         ###   ########.fr       */
+/*   Created: 2026/11/11 13:44:02 by abdait-o          #+#    #+#             */
+/*   Updated: 2026/11/11 17:32:08 by abdait-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,20 @@ char	*ft_strjoin(char *s1, char *s2)
 
 char	*read_file(int fd)
 {
-	char	buffer[BUFFER_SIZE];
+	char	*buffer;
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
+	if(!buffer)
+		return (NULL);
 	ssize_t	y;
 	char	*res;
 	ssize_t	i;
 
 	y = read(fd, buffer, BUFFER_SIZE);
 	if (y <= 0)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	res = malloc(y + 1);
 	if (!res)
 		return (NULL);
@@ -70,6 +76,7 @@ char	*read_file(int fd)
 		i++;
 	}
 	res[i] = '\0';
+	free(buffer);
 	return (res);
 }
 

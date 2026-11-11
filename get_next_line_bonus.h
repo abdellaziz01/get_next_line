@@ -1,0 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/11 13:48:11 by abdait-o          #+#    #+#             */
+/*   Updated: 2026/11/11 16:29:37 by abdait-o         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
+
+#ifndef OPEN_MAX
+# define OPEN_MAX 1024
+#endif
+
+# include <stdlib.h>
+# include <unistd.h>
+#include <limits.h>
+
+char	*get_next_line(int fd);
+ssize_t	ft_strlen(char *str);
+char	*ft_strjoin(char *s1, char *s2);
+char	*read_file(int fd);
+ssize_t	check(char *str);
+ssize_t	return_start(char *temp);
+
+#endif
