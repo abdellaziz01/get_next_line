@@ -24,11 +24,11 @@ ssize_t	ft_strlen(char *str)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	int		l1;
-	int		l2;
+	ssize_t	l1;
+	ssize_t	l2;
 	char	*res;
-	int		i;
-	int		j;
+	ssize_t	i;
+	ssize_t	j;
 
 	if (!s1)
 		s1 = "";
@@ -53,31 +53,19 @@ char	*ft_strjoin(char *s1, char *s2)
 char	*read_file(int fd)
 {
 	char	*buffer;
-	buffer = malloc((size_t)BUFFER_SIZE + 1);
-	if(!buffer)
-		return (NULL);
 	ssize_t	y;
-	char	*res;
-	ssize_t	i;
 
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
 	y = read(fd, buffer, BUFFER_SIZE);
 	if (y <= 0)
 	{
 		free(buffer);
 		return (NULL);
 	}
-	res = malloc(y + 1);
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (i < y)
-	{
-		res[i] = buffer[i];
-		i++;
-	}
-	res[i] = '\0';
-	free(buffer);
-	return (res);
+	buffer[y] = '\0';
+	return (buffer);
 }
 
 ssize_t	check(char *str)

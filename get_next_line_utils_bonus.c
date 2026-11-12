@@ -6,7 +6,7 @@
 /*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 13:44:02 by abdait-o          #+#    #+#             */
-/*   Updated: 2026/11/11 17:10:33 by abdait-o         ###   ########.fr       */
+/*   Updated: 2026/11/12 13:11:27 by abdait-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ ssize_t	ft_strlen(char *str)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	int		l1;
-	int		l2;
+	ssize_t	l1;
+	ssize_t	l2;
 	char	*res;
-	int		i;
-	int		j;
+	ssize_t	i;
+	ssize_t	j;
 
 	if (!s1)
 		s1 = "";
@@ -36,7 +36,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	l1 = ft_strlen(s1);
 	l2 = ft_strlen(s2);
-	res = malloc(l1 + l2  + 1);
+	res = malloc(l1 + l2 + 1);
 	if (!res)
 		return (NULL);
 	j = 0;
@@ -53,31 +53,19 @@ char	*ft_strjoin(char *s1, char *s2)
 char	*read_file(int fd)
 {
 	char	*buffer;
-	buffer = malloc((size_t)BUFFER_SIZE + 1);
-	if(!buffer)
-		return (NULL);
 	ssize_t	y;
-	char	*res;
-	ssize_t	i;
 
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
 	y = read(fd, buffer, BUFFER_SIZE);
 	if (y <= 0)
 	{
 		free(buffer);
 		return (NULL);
 	}
-	res = malloc(y + 1);
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (i < y)
-	{
-		res[i] = buffer[i];
-		i++;
-	}
-	res[i] = '\0';
-	free(buffer);
-	return (res);
+	buffer[y] = '\0';
+	return (buffer);
 }
 
 ssize_t	check(char *str)

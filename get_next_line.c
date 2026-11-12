@@ -6,33 +6,29 @@
 /*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 13:43:41 by abdait-o          #+#    #+#             */
-/*   Updated: 2026/11/11 17:32:29 by abdait-o         ###   ########.fr       */
+/*   Updated: 2026/11/12 12:49:15 by abdait-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
- 
 #include "get_next_line.h"
 
 static char	*return_str(char *temp, int fd)
 {
-	char	*new_temp = NULL;
+	char	*new_temp;
 	char	*s1;
 
+	new_temp = NULL;
 	while (check(temp) == -1)
 	{
-		 
 		s1 = read_file(fd);
 		if (!s1)
 			break ;
 		new_temp = temp;
 		temp = ft_strjoin(new_temp, s1);
 		free(s1);
-		if (!temp)
-		{
-			free(new_temp);
-			return (NULL);
-		}
 		free(new_temp);
+		if (!temp)
+			return (NULL);
 	}
 	return (temp);
 }

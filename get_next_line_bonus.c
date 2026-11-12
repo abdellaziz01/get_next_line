@@ -6,14 +6,12 @@
 /*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 13:43:46 by abdait-o          #+#    #+#             */
-/*   Updated: 2026/11/11 17:22:47 by abdait-o         ###   ########.fr       */
+/*   Updated: 2026/11/12 15:57:16 by abdait-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
- 
- 
 #include "get_next_line_bonus.h"
- 
+
 static char	*return_str(char *temp, int fd)
 {
 	char	*new_temp;
@@ -79,10 +77,10 @@ char	*get_next_line(int fd)
 	char		*res;
 	ssize_t		start;
 	char		*new_temp;
-    if (fd < 0 || fd >= OPEN_MAX)
-        return (NULL);
-    static char *temp[OPEN_MAX];
-    
+	static char	*temp[OPEN_MAX];
+
+	if (fd < 0 || fd >= OPEN_MAX)
+		return (NULL);
 	temp[fd] = return_str(temp[fd], fd);
 	if (!temp[fd] || !temp[fd][0])
 		return (if_null(&temp[fd]));
