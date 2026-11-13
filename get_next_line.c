@@ -6,7 +6,7 @@
 /*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 13:43:41 by abdait-o          #+#    #+#             */
-/*   Updated: 2026/11/12 12:49:15 by abdait-o         ###   ########.fr       */
+/*   Updated: 2026/11/13 11:10:58 by abdait-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ static char	*return_str(char *temp, int fd)
 	return (temp);
 }
 
-char	*if_null(char *str)
+static char *if_null(char **str)
 {
-	free(str);
-	str = NULL;
-	return (NULL);
+    free(*str);
+    *str = NULL;
+    return (NULL);
 }
 
-char	*copy_to1(char *s1, char *s2, ssize_t start)
+static char	*copy_to1(char *s1, char *s2, ssize_t start)
 {
 	ssize_t	i;
 
@@ -54,7 +54,7 @@ char	*copy_to1(char *s1, char *s2, ssize_t start)
 	return (s1);
 }
 
-char	*copy_to2(char *s1, char *s2, ssize_t start)
+static char	*copy_to2(char *s1, char *s2, ssize_t start)
 {
 	ssize_t	i;
 	ssize_t	len;
@@ -79,17 +79,17 @@ char	*get_next_line(int fd)
 
 	temp = return_str(temp, fd);
 	if (!temp || !temp[0])
-		return (if_null(temp));
+		return (if_null(&temp));
 	start = return_start(temp);
 	res = malloc(start + 2);
 	if (!res)
-		return (if_null(temp));
+		return (if_null(&temp));
 	res = copy_to1(res, temp, start);
 	new_temp = malloc(ft_strlen(temp) - start + 1);
 	if (!new_temp)
 	{
 		free(res);
-		return (if_null(temp));
+		return (if_null(&temp));
 	}
 	new_temp = copy_to2(new_temp, temp, start);
 	free(temp);

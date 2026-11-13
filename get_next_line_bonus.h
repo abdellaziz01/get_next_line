@@ -6,7 +6,7 @@
 /*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 13:48:11 by abdait-o          #+#    #+#             */
-/*   Updated: 2026/11/12 12:53:52 by abdait-o         ###   ########.fr       */
+/*   Updated: 2026/11/13 15:54:32 by abdait-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,25 @@
 #  define BUFFER_SIZE 42
 # endif
 
-# ifndef OPEN_MAX
-#  define OPEN_MAX 1024
-# endif
+ 
+typedef struct tk_list
+{
+    int fd;
+    char *box;
+    struct tk_list *next;
+}l_list;
 
 # include <stdlib.h>
 # include <unistd.h>
+ 
 
 char	*get_next_line(int fd);
 ssize_t	ft_strlen(char *str);
 char	*ft_strjoin(char *s1, char *s2);
-char	*read_file(int fd);
-ssize_t	check(char *str);
-ssize_t	return_start(char *temp);
+l_list *exact_node(l_list *head , int fd);
+l_list *last_node(l_list *head);
+l_list *add_node(l_list **head, int fd);
+char	*copy_to1(char *s1, char *s2, ssize_t start);
+char	*copy_to2(char *s1, char *s2, ssize_t start);
 
 #endif

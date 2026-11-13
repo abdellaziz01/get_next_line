@@ -6,12 +6,55 @@
 /*   By: abdait-o <abdait-o@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/11 13:43:46 by abdait-o          #+#    #+#             */
-/*   Updated: 2026/11/12 15:57:16 by abdait-o         ###   ########.fr       */
+/*   Updated: 2026/11/13 16:53:38 by abdait-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+  #include "get_next_line_bonus.h"
 
+
+static ssize_t	check(char *str)
+{
+	ssize_t	j;
+
+	if (!str)
+		return (-1);
+	j = 0;
+	while (str[j] && str[j] != '\n')
+		j++;
+	if (str[j] == '\n')
+		return (j);
+	return (-1);
+}
+ static char	*read_file(int fd) 
+{
+	char	*buffer;
+	ssize_t	y;
+
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+	y = read(fd, buffer, BUFFER_SIZE);
+	if (y <= 0)
+	{
+		free(buffer);
+		return (NULL);
+	}
+	buffer[y] = '\0';
+	return (buffer);
+}
+static ssize_t	return_start(char *temp)
+{
+	ssize_t	start;
+	ssize_t	len;
+
+	len = ft_strlen(temp);
+	if (check(temp) == -1)
+		start = len;
+	else
+		start = check(temp);
+	return (start);
+}
 static char	*return_str(char *temp, int fd)
 {
 	char	*new_temp;
@@ -35,41 +78,30 @@ static char	*return_str(char *temp, int fd)
 	return (temp);
 }
 
-char	*if_null(char **str)
+static char	*if_null(char **str)
 {
 	free(*str);
 	*str = NULL;
 	return (NULL);
 }
-
-char	*copy_to1(char *s1, char *s2, ssize_t start)
+char *clear_node(l_list **head , l_list *new)
 {
-	ssize_t	i;
-
-	i = 0;
-	while (i <= start)
+	l_list *current;
+	if(*head == new)
 	{
-		s1[i] = s2[i];
-		i++;
+		*head = new -> next;
 	}
-	s1[i] = '\0';
-	return (s1);
-}
-
-char	*copy_to2(char *s1, char *s2, ssize_t start)
-{
-	ssize_t	i;
-	ssize_t	len;
-
-	len = ft_strlen(s2);
-	i = 0;
-	while (i < len - start - 1)
+	else
 	{
-		s1[i] = s2[start + 1 + i];
-		i++;
+		current = *head;
+		while(current && current-> next != new)
+			current = current -> next;
+		if(current)
+			current -> next = new -> next;
 	}
-	s1[i] = '\0';
-	return (s1);
+	free(new -> box);
+	free (new);
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -77,26 +109,33 @@ char	*get_next_line(int fd)
 	char		*res;
 	ssize_t		start;
 	char		*new_temp;
-	static char	*temp[OPEN_MAX];
-
-	if (fd < 0 || fd >= OPEN_MAX)
-		return (NULL);
-	temp[fd] = return_str(temp[fd], fd);
-	if (!temp[fd] || !temp[fd][0])
-		return (if_null(&temp[fd]));
-	start = return_start(temp[fd]);
+	static  l_list *head = NULL;
+	l_list *new;
+	if(!exact_node(head , fd))
+	{
+		new = add_node(&head , fd);
+		if(!new)
+			return NULL;
+	}
+	else
+		new = exact_node(head , fd);
+	new -> box = return_str(new -> box, fd);
+	if (!new -> box || !new -> box[0])
+		return clear_node(&head , new);
+	start = return_start(new -> box);
 	res = malloc(start + 2);
 	if (!res)
-		return (if_null(&temp[fd]));
-	res = copy_to1(res, temp[fd], start);
-	new_temp = malloc(ft_strlen(temp[fd]) - start + 1);
+		return (if_null(&new -> box));
+	res = copy_to1(res, new -> box, start);
+	new_temp = malloc(ft_strlen(new -> box) - start + 1);
 	if (!new_temp)
 	{
 		free(res);
-		return (if_null(&temp[fd]));
+		return (if_null(&new -> box));
 	}
-	new_temp = copy_to2(new_temp, temp[fd], start);
-	free(temp[fd]);
-	temp[fd] = new_temp;
+	new_temp = copy_to2(new_temp, new -> box, start);
+	free(new -> box);
+	new -> box = new_temp;
 	return (res);
 }
+ 
